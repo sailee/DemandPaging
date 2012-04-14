@@ -1,7 +1,5 @@
 package demandPaging;
 
-import java.io.OutputStream;
-import java.io.PrintStream;
 import java.util.ArrayList;
 import java.util.EnumSet;
 
@@ -16,7 +14,7 @@ public class Paging {
 	 * @param args
 	 */
 	public static void main(String[] args) {
-		PrintStream out=null;
+		//PrintStream out=null;
 		
 		if(args.length < 6)
 		{
@@ -41,24 +39,59 @@ public class Paging {
 		
 		displayInputs();
 		
-		if(args.length == 7)
+//		if(args.length == 7)
+//		{
+//			if(args[6] == "0")
+//			{
+//				out = System.out;
+//				System.setOut(new PrintStream(new OutputStream(){
+//					public void write(int b) {}
+//				}));
+//			}
+//		}
+		
+		int framecount = machineSize/pageSize;
+		ArrayList<Page> pageFrames = new ArrayList<Page>(framecount);
+		
+		for(int i=0;i<framecount;i++)
 		{
-			if(args[6] == "0")
+			pageFrames.add(new Page());
+		}
+		
+		ArrayList<Process> processes = getProcessList(jobMix);
+		
+		for(int i=0;i<processes.size();i++)
+		{
+			Process p = processes.get(i);		
+			
+			for(int q=0;q<3;q++)
 			{
-				out = System.out;
-				System.setOut(new PrintStream(new OutputStream(){
-					public void write(int b) {}
-				}));
+				if(p.hasPendingReferences())
+				{
+					int w = p.getNextReference();
+					if(!inMemory(w))
+					{
+						algorithm.fetchPage(pageFrames);
+					}
+				}
+				else
+				{
+					q=4;
+				}
 			}
 		}
 		
-		int framecount = machineSize/pageSize;
-		algorithm.execute(machineSize, pageSize, processSize, getProcessList(jobMix), referenceCount, framecount);
+		//algorithm.execute(machineSize, pageSize, processSize, getProcessList(jobMix), referenceCount, framecount);
 		
-		if(args.length ==7)
-			System.setOut(out);
+//		if(args.length ==7)
+//			System.setOut(out);
 	}
 	
+	private static boolean inMemory(int w) {
+		// TODO Auto-generated method stub
+		return false;
+	}
+
 	public static ArrayList<Process> getProcessList(int jobMix)
 	{
 		ArrayList<Process> processes = new ArrayList<Process>();

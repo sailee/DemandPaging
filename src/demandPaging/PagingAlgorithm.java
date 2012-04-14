@@ -20,7 +20,7 @@ public enum PagingAlgorithm {
 		@Override
 		public void execute(int machineSize, int pageSize, int processSize,
 				ArrayList<Process> processes, int referenceCount, int framecount) {
-			// TODO Auto-generated method stub
+			System.out.println(processes);
 
 		}
 	},
@@ -34,4 +34,9 @@ public enum PagingAlgorithm {
 	};
 
 	public abstract void execute(int machineSize, int pageSize, int processSize, ArrayList<Process> processes, int referenceCount, int framecount);
+
+	public void fetchPage(ArrayList<Page> pageFrames) {
+		// TODO Auto-generated method stub
+		
+	}
 }
